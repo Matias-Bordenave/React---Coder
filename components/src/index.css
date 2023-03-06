@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  background-color: #242424;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+
+h1 {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.shop-icon-button {
+  background-color: white;
+  ;
+  padding: 5px;
+  border-radius: 500px ;
+  margin-right: 10px;
+}
+
+.shop-icon {
+  background-color: white;
+  ;
+  width: 40px;
+  margin: 5px;
+}
+
+.text-black {
+  background-color: white;
+  ;
+  color: black;
+}
