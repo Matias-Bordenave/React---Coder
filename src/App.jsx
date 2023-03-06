@@ -10,8 +10,8 @@ const App = () => {
   return (
     <>
       <ChakraProvider>
-        <NavBar />
-        <ItemListContainer greeting="Bienvenidos a mi E-commerce"/>
+        {<NavBar />}
+        <ItemListContainer greeting="Bienvenidos a mi E-commerce" />
       </ChakraProvider>
     </>
   )
