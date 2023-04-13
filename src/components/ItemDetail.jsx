@@ -1,42 +1,41 @@
-import React from "react";
-import { Card, CardHeader, CardBody, CardFooter, Heading, Image, Stack, Text, Button } from '@chakra-ui/react'
+import { React, useContext } from "react";
+
+import { Card, CardBody, Image, Stack, Text, Heading, CardFooter, } from "@chakra-ui/react";
+
+import ItemCount from "./ItemCount";
+import { CartContext } from "../context/ShoppingCartProvider";
 
 const ItemDetail = ({ item }) => {
+
+    const { cart, addToCart, isInCart } = useContext(CartContext);
+
+    const addProduct = (quantity) => {
+        addToCart(item, quantity);
+    };
+
+    let quantity = 1
+    if(isInCart(item.id)){
+        const prod = cart.find((obj) => obj.item.id == item.id)
+        quantity = prod.quantity
+    } 
+
     return (
         <>
-            {item.map((product) => {
-                return (
-                    <Card
-                        direction={{ base: 'column', sm: 'row' }}
-                        overflow='hidden'
-                        variant='outline'
-                    >
-                        <Image
-                            objectFit='cover'
-                            maxW={{ base: '100%', sm: '200px' }}
-                            src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
-                            alt='Caffe Latte'
-                        />
+            <Card key={item.id} className="card" maxW="sm" minW="sm">
+                <CardBody className="cardbody">
+                    <Image src={item.img} alt={item.alt} borderRadius="lg" h={300} w="100%" />
+                    <Stack mt="6" spacing="3">
+                        <Heading size="md">{item.name}</Heading>
+                        <Text>{item.price}</Text>
+                        <Text>Descripcion: {item.description}</Text>
+                        <Text>stock: {item.stock}</Text>
+                    </Stack>
 
-                        <Stack>
-                            <CardBody>
-                                <Heading size='md'>The perfect latte</Heading>
-
-                                <Text py='2'>
-                                    Caffè latte is a coffee beverage of Italian origin made with espresso
-                                    and steamed milk.
-                                </Text>
-                            </CardBody>
-
-                            <CardFooter>
-                                <Button variant='solid' colorScheme='blue'>
-                                    Buy Latte
-                                </Button>
-                            </CardFooter>
-                        </Stack>
-                    </Card>
-                );
-            })}
+                    <CardFooter justifyContent="center">
+                        <ItemCount incart={quantity} product={item} addProduct={addProduct} />
+                    </CardFooter>
+                </CardBody>
+            </Card>
         </>
     );
 };

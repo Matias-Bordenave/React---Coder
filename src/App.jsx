@@ -1,45 +1,70 @@
 
 import "./index.css";
-import React, { useEffect, useState } from "react";
-import { ChakraProvider } from '@chakra-ui/react';
+import { React } from "react";
+
+import { ChakraProvider, Flex } from "@chakra-ui/react";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import ItemDetailContainer from "./components/ItemDetailContainer";
+import Error from "./components/Error";
 import NavBar from "./components/NavBar";
 import ItemListContainer from "./components/ItemListContainer";
-import { Route, Routes } from "react-router-dom";
-import ItemDetail from "./components/ItemDetail";
-import { useParams } from "react-router-dom";
+import Footer from "./components/Footer";
+import Home from "./components/Home";
+import ShoppingCartProvider from "./context/ShoppingCartProvider";
+import CartContainer from "./components/CartContainer";
+import Form from "./components/Form"
 
 const App = () => {
-  const { id } = useParams();
-  
-  const getProducts = async () => {
-    const response = await fetch(
-        "https://www.balldontlie.io/api/v1/players"
+    return (
+        <>
+            <ChakraProvider>
+                <BrowserRouter>
+                    <ShoppingCartProvider>
+                        <NavBar />
+
+                        <Routes>
+                            <Route exact path="/" element={<Home />} />
+
+                            <Route
+                                exact
+                                path="/catalogue"
+                                element={<ItemListContainer />}
+                            />
+                            <Route
+                                exact
+                                path="/catalogue/:category"
+                                element={<ItemListContainer />}
+                            />
+
+                            <Route
+                                exact
+                                path="/item/:id"
+                                element={<ItemDetailContainer />}
+                            />
+
+                            <Route
+                                exact
+                                path="/cart"
+                                element={<CartContainer />}
+                            />
+
+                            <Route
+                                exact
+                                path="/form"
+                                element={<Form />}
+                            />
+
+                            <Route exact path="*" element={<Error />} />
+                        </Routes>
+                    </ShoppingCartProvider>
+
+                    <Footer />
+                </BrowserRouter>
+            </ChakraProvider>
+        </>
     );
-    const data = await response.json();
-    return data;
 };
-
-const [products, setProducts] = useState([]);
-
-useEffect(() => {
-    getProducts().then((product) => setProducts(product));
-}, []);
-
-
-  return (
-    <>
-      <ChakraProvider>
-        {<NavBar />}
-        <div>
-          <Routes>
-            <Route path="/home" element={<h2>Bienvenidos a mi E-commers</h2>} />
-            <Route path="/product" element={<ItemListContainer products={products.data} />} />
-            <Route path="/product/:categoria" element={<ItemListContainer products={products.data} />} />
-          </Routes>
-        </div>
-      </ChakraProvider>
-    </>
-  )
-}
 
 export default App;

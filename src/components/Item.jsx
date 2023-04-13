@@ -1,39 +1,34 @@
-import React from 'react'
-import ItemListContainer from './ItemListContainer'
-import { Card, CardHeader, CardBody, CardFooter, Heading, Image, Stack, Text, Button } from '@chakra-ui/react'
+import { React, useContext } from "react";
 
-const Item = ({ firstName }) => {
+import { Card, CardBody, Image, Stack, Heading, Text, CardFooter, } from "@chakra-ui/react";
+
+import { Link } from "react-router-dom";
+
+const Item = ({ description, price, stock, name, img, id, alt }) => {
     return (
-        <Card
-            direction={{ base: 'column', sm: 'row' }}
-            overflow='hidden'
-            variant='outline' >
-            <Image
-                objectFit='cover'
-                maxW={{ base: '100%', sm: '200px' }}
-                src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
-                alt='Caffe Latte'
-            />
-
-            <Stack>
-                <CardBody>
-                    <Heading size='md'>{firstName}</Heading>
-
-                    <Text py='2'>
-                        Caffè latte is a coffee beverage of Italian origin made with espresso
-                        and steamed milk.
-                    </Text>
-                </CardBody>
-
-                <CardFooter>
-                    <Button variant='solid' colorScheme='blue'>
-                        Buy Latte
-                    </Button>
-                </CardFooter>
-            </Stack>
-        </Card>
-
-    )
-}
+        <>
+            <Link to={`/item/${id}`}>
+                <Card className="card" maxW="sm" minW="sm" >
+                    <CardBody className="cardbody" justifyItems="center">
+                        <Image
+                            src={img}
+                            alt={alt}
+                            h={350}
+                            w="100%"
+                            borderRadius="lg"
+                        />
+                        <Stack mt="6" spacing="3">
+                            <Heading size="md">{name}</Heading>
+                            <Text> Descripcion: {description}</Text>
+                            <Text> Precio: $ {price}</Text>
+                            <Text> Stock: {stock}</Text>
+                        </Stack>
+                        <CardFooter justifyContent="center"></CardFooter>
+                    </CardBody>
+                </Card>
+            </Link>
+        </>
+    );
+};
 
 export default Item;

@@ -1,32 +1,70 @@
-import React from 'react';
-import { Flex } from '@chakra-ui/react';
-import ItemList from './ItemList';
-import { useParams } from 'react-router-dom';
+import { React, useState, useEffect } from "react";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 
-const ItemListContainer = ({products}) => {
-    const {categoria} = useParams()
+import { filter, Flex } from "@chakra-ui/react";
 
-    let posicion;
-    switch (categoria) {
-        case "teclado":
-            posicion = "G";
-            break;
-        case "mouse":
-            posicion = "G-F";
-            break;
-    }
+import ItemList from "./ItemList";
+import Loading from "../Loading";
 
-    const filtrado = products.filter((product) => product.position == posicion );
+import { useParams } from "react-router-dom";
 
-    return (
-        <Flex justifyContent="center" alignItems="center">
-            {categoria ? (
-                    <ItemList products={filtrado} />
-                ) : (
+const ItemListContainer = () => {
+    //controla pantalla de carga
+    const [loading, setLoading] = useState(true);
+
+    //recupera la categoria de la url
+    const { category } = useParams();
+
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        setLoading(true)
+        const db = getFirestore();
+        const prods_collection = collection(db, "Products");
+        getDocs(prods_collection).then((snapshot) => {
+            const docs = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+            let cat = "all";
+
+            if (category) {
+                cat = category;
+
+                setProducts(docs.filter((item) => item.category == cat));
+            } else {
+                setProducts(docs.sort((x,y) => x.category.localeCompare(y.category) ))
+            }
+        });
+
+        setLoading(false);
+    }, [category]);
+
+    if (loading) {
+        return (
+            <>
+                <Flex m={200} justifyContent="center">
+                    <Loading />
+                </Flex>
+            </>
+        );
+    } else {
+        return (
+            <>
+                <Flex
+                    justifyContent="center"
+                    alignItems="center"
+                    borderRadius="10px"
+                    className="border"
+                    m={100}
+                    p={10}
+                >
                     <ItemList products={products} />
-                )}
-        </Flex>
-    )
-}
+                </Flex>
+            </>
+        );
+    }
+};
 
-export default ItemListContainer    
+export default ItemListContainer;

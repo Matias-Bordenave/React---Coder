@@ -1,51 +1,87 @@
-import React from "react";
-import { Flex, Button, Image } from '@chakra-ui/react';
-import CartWidget from "./CartWidget";
-import { Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider } from '@chakra-ui/react';
-import logo from "../assets/logo.webp";
+import logo from "../assets/icons/logo.webp";
+import { React, useContext } from "react";
+import { Flex, Button, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-
+import CartWidget from "./CartWidget";
 
 const NavBar = () => {
     return (
         <>
-            <Flex h="6vh">
+            <Flex className="navbar-container" h="10vh" alignItems="center">
                 <Flex w="20vw">
-                    <a href="./home"><Image src={logo} h="10vh" w="10vw" /></a>
-                    <a href="./home">Tecla2</a>
+                    <Link to="/">
+                        <Image src={logo} h="20vh" w="25vw" />
+                    </Link>
                 </Flex>
 
-                <Flex w="100vw" justifyContent="center" gap={10}>
-                    <Menu>
-                        <Link to="/home">
-                            <MenuButton as={Button} variant="link">
-                                Home
-                            </MenuButton>
-                        </Link>
-                        <Link to="/product">
-                            <MenuButton as={Button} variant="link">
-                                Products
-                            </MenuButton>
-                        </Link>
-                        <Link to={`/product/${"mouse"}`}>
-                            <MenuButton as={Button} variant="link">
-                                mouses
-                            </MenuButton>
-                        </Link>
-                        <Link to={`/product/${"teclado"}`}>
-                            <MenuButton as={Button} variant="link">
-                                teclados
-                            </MenuButton>
-                        </Link>
-                    </Menu>
+                <Flex justifyContent="center" className="navbar-list" w="100vw">
+                    <ul className="none-style-list">
+                        <li className="list-item">
+                            <Link to={"/catalogue"}>
+                                <Button
+                                    className="item-button"
+                                    variant="link"
+                                    colorScheme="white"
+                                    fontSize={20}
+                                >
+                                    Catalogo
+                                </Button>
+                            </Link>
+                        </li>
+                        {">>"}
+                        <li className="list-item">
+                            <Link to={`/catalogue/${"teclado"}`}>
+                                <Button
+                                    className="item-button"
+                                    variant="link"
+                                    colorScheme="white"
+                                >
+                                    Teclado
+                                </Button>
+                            </Link>
+                        </li>
+                        <li className="list-item">
+                            <Link to={`/catalogue/${"mouse"}`}>
+                                <Button
+                                    className="item-button"
+                                    variant="link"
+                                    colorScheme="white"
+                                >
+                                    Mouse
+                                </Button>
+                            </Link>
+                        </li>
+                        <li className="list-item">
+                            <Link to={`/catalogue/${"monitor"}`}>
+                                <Button
+                                    className="item-button"
+                                    variant="link"
+                                    colorScheme="white"
+                                >
+                                    Monitor
+                                </Button>
+                            </Link>
+                        </li>
+                        <li className="list-item">
+                            <Link to={`/catalogue/${"accesorios"}`}>
+                                <Button
+                                    className="item-button"
+                                    variant="link"
+                                    colorScheme="white"
+                                >
+                                    Accesorios
+                                </Button>
+                            </Link>
+                        </li>
+                    </ul>
                 </Flex>
 
-                <Flex w="20vw">
+                <Flex flexDirection="column" className="navbar-item" w="20vw">
                     <CartWidget />
                 </Flex>
             </Flex>
         </>
-    )
-}
+    );
+};
 
 export default NavBar;
